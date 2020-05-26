@@ -57,8 +57,31 @@ namespace std
     {
         size_t operator()(const IPv6& obj) const
         {
-		string targetString = (char *)obj.address;
-		return std::hash<std::string>()( targetString );
+	//Approach 1:	
+		//string str((char *)obj.address);
+		//std::hash<std::string> hash_fn;
+		
+            	//size_t h1 = hash_fn(str);
+		// return h1;
+	//Approach 2:
+		//unsigned char addressCopy[17];
+		//strcpy((char *)addressCopy, (char *)obj.address);
+		//size_t result = 0;
+		//unsigned char * ptr = addressCopy;
+		//while(ptr) result = (result << 1)^ (*(ptr++));
+
+            	//return ( result );
+	//Approach 3:
+		unsigned long hash = 5381;
+		int c;
+		unsigned char addressCopy[17];
+		strcpy((char *)addressCopy, (char *)obj.address);
+		unsigned char *ptr = addressCopy;
+
+		while(c = *ptr++)
+			hash = ((hash << 5) + hash) + c;
+
+		return hash;
         }
     };
 
